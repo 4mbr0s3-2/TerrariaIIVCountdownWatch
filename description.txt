@@ -1,0 +1,19 @@
+Terraria 1.4 Countdown Watch simply adds a watch to Terraria that allows you to see and customize a countdown to 1.4 that displays on the top of the screen.
+
+When that countdown reaches zero, however, there is an in-game event that changes the spawn pool for 20 seconds...
+It happens whether or not the player has the countdown watch in their inventory.
+
+After 1.4 has released, it's highly recommended that you uninstall this mod. Otherwise, the in-game event would always occur when loading a world.
+
+This mod will be unpublished the day after 1.4 is released.
+
+
+
+
+
+
+
+
+
+Music during in-game event:
+Noisestorm - Crab Rave (Remix by me)
