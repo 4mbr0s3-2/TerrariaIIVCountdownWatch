@@ -17,3 +17,6 @@ This mod will be unpublished the day after 1.4 is released.
 
 Music during in-game event:
 Noisestorm - Crab Rave (Remix by me)
+
+Changelog:
++ Added icon to Mod Browser
