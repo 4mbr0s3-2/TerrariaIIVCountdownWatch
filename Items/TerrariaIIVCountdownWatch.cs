@@ -20,7 +20,7 @@ namespace TerrariaIIVCountdownWatch.Items
 		public static bool large = true;
 		public static int displayType = 0;
 		public static bool additive = true;
-		public static DateTime endTime = new DateTime(2020, 05, 16, 0, 0, 0);
+		public static DateTime endTime = new DateTime(2020, 05, 16, 17, 0, 0);
 		public class CountdownUI : UIState
 		{
 			UIText text;
@@ -63,9 +63,8 @@ namespace TerrariaIIVCountdownWatch.Items
 			}
 			public override void Update(GameTime gameTime)
 			{
-				//endTime = new DateTime(2020, 05, 11, 11, 32, 0);
 				string countdownText = "";
-				TimeSpan ts = endTime.Subtract(DateTime.Now);
+				TimeSpan ts = endTime.Subtract(DateTime.UtcNow);
 				if (displayType == 0)
 				{
 					countdownText = ts.ToString("d' day" + (ts.Days != 1 ? "s" : "") + " 'h' hour" + (ts.Hours != 1 ? "s" : "") + " 'm' minute" + (ts.Minutes != 1 ? "s" : "") + " 's' second"+ (ts.Seconds != 1 ? "s" : "") + "'");
@@ -74,7 +73,7 @@ namespace TerrariaIIVCountdownWatch.Items
 				{
 					countdownText = ts.ToString("d'd 'h'h 'm'm 's's'");
 				}
-				if (DateTime.Now.CompareTo(endTime) > 0)
+				if (DateTime.UtcNow.CompareTo(endTime) > 0)
 				{
 					countdownText = "1.4 is out!";
 				}
@@ -155,47 +154,58 @@ namespace TerrariaIIVCountdownWatch.Items
 	}
 	public class CrabRaveWorld : ModWorld
 	{
+		public static bool AlreadyPassedEndTime = false;
 		public static bool CrabRaveOngoing = false;
 		public static bool CrabRave = false;
 		public static int CrabRaveDuration = 0;
+		public override void Initialize()
+		{
+			if (DateTime.UtcNow.CompareTo(TerrariaIIVCountdownWatch.endTime) > 0)
+			{
+				AlreadyPassedEndTime = true;
+			}
+		}
 		public override void PostUpdate()
 		{
-			if (Main.netMode != NetmodeID.MultiplayerClient)
+			if (!AlreadyPassedEndTime)
 			{
-				if (DateTime.Now.CompareTo(TerrariaIIVCountdownWatch.endTime) > 0 && !CrabRaveOngoing && !CrabRave) // Occurs once
+				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					CrabRave = true;
-					CrabRaveOngoing = true;
-					foreach (Player player in Main.player)
+					if (DateTime.UtcNow.CompareTo(TerrariaIIVCountdownWatch.endTime) > 0 && !CrabRaveOngoing && !CrabRave) // Occurs once
 					{
-						Projectile.NewProjectile(player.Center, new Vector2(0, -3), mod.ProjectileType("IIVRocketProjectile"), 140, 2, player.whoAmI);
-					}
-					if (Main.netMode == NetmodeID.Server)
-					{
-						var netMessage = mod.GetPacket();
-						netMessage.Write((byte)TerrariaIIVCountdownMessageType.CrabRaveOngoing);
-						netMessage.Write(CrabRaveWorld.CrabRaveOngoing);
-						netMessage.Send();
-					}
-				}
-				else if (DateTime.Now.CompareTo(TerrariaIIVCountdownWatch.endTime) < 0)
-				{
-					CrabRave = false; // Debugging purposes
-					CrabRaveOngoing = false;
-					CrabRaveDuration = 0;
-				}
-				if (CrabRave && CrabRaveOngoing)
-				{
-					CrabRaveDuration++;
-					if (CrabRaveDuration > 960)
-					{
-						CrabRaveOngoing = false;
+						CrabRave = true;
+						CrabRaveOngoing = true;
+						foreach (Player player in Main.player)
+						{
+							Projectile.NewProjectile(player.Center, new Vector2(0, -3), mod.ProjectileType("IIVRocketProjectile"), 140, 2, player.whoAmI);
+						}
 						if (Main.netMode == NetmodeID.Server)
 						{
 							var netMessage = mod.GetPacket();
 							netMessage.Write((byte)TerrariaIIVCountdownMessageType.CrabRaveOngoing);
 							netMessage.Write(CrabRaveWorld.CrabRaveOngoing);
 							netMessage.Send();
+						}
+					}
+					else if (DateTime.UtcNow.CompareTo(TerrariaIIVCountdownWatch.endTime) < 0)
+					{
+						CrabRave = false; // Debugging purposes
+						CrabRaveOngoing = false;
+						CrabRaveDuration = 0;
+					}
+					if (CrabRave && CrabRaveOngoing)
+					{
+						CrabRaveDuration++;
+						if (CrabRaveDuration > 960)
+						{
+							CrabRaveOngoing = false;
+							if (Main.netMode == NetmodeID.Server)
+							{
+								var netMessage = mod.GetPacket();
+								netMessage.Write((byte)TerrariaIIVCountdownMessageType.CrabRaveOngoing);
+								netMessage.Write(CrabRaveWorld.CrabRaveOngoing);
+								netMessage.Send();
+							}
 						}
 					}
 				}

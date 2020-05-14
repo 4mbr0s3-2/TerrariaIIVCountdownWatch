@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace TerrariaIIVCountdownWatch.NPCs
 {
     class RavingCrab : ModNPC
     {
+        double acceleration = 0;
         float frame
         {
             get
@@ -38,6 +40,19 @@ namespace TerrariaIIVCountdownWatch.NPCs
             npc.friendly = true;
             npc.aiStyle = 3;
             npc.lifeMax = 140;
+            if (Main.netMode != NetmodeID.MultiplayerClient)
+            {
+                acceleration = Main.rand.Next(10, 30) / 100f;
+            }
+            npc.netUpdate = true;
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(acceleration);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            acceleration = reader.ReadDouble();
         }
         public override void AI()
         {
@@ -46,18 +61,18 @@ namespace TerrariaIIVCountdownWatch.NPCs
             {
                 npc.velocity.Y = -7;
             }
-            if (Math.Abs(npc.velocity.X) <= 0.001f)
-            {
-                speed = -npc.direction * 3;
-                //return;
-            } 
+            //if (Math.Abs(npc.velocity.X) <= 0.001f)
+            //{
+            //    speed = -npc.direction * 3;
+            //    //return;
+            //} 
             if (npc.position.X > Main.player[npc.target].position.X && npc.HasValidTarget)
             {
-                speed -= 0.1f;
+                speed -= (float)acceleration;
             }
             if (npc.position.X < Main.player[npc.target].position.X && npc.HasValidTarget)
             {
-                speed += 0.1f;
+                speed += (float)acceleration;
             }
             if (speed > 4.5f)
             {

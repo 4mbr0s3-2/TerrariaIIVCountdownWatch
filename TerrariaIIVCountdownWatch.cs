@@ -69,8 +69,8 @@ namespace TerrariaIIVCountdownWatch
         }
         public override void UpdateMusic(ref int music, ref MusicPriority priority)
         {
-            if ((Items.TerrariaIIVCountdownWatch.endTime.Subtract(DateTime.Now).TotalSeconds < 7.69
-                && Items.TerrariaIIVCountdownWatch.endTime.Subtract(DateTime.Now).TotalSeconds >= 0)
+            if ((Items.TerrariaIIVCountdownWatch.endTime.Subtract(DateTime.UtcNow).TotalSeconds < 7.69
+                && Items.TerrariaIIVCountdownWatch.endTime.Subtract(DateTime.UtcNow).TotalSeconds >= 0)
                 || CrabRaveWorld.CrabRaveOngoing)
             {
                 music = GetSoundSlot(SoundType.Music, "Sounds/Music/CrabRave");
