@@ -1,22 +1,29 @@
+Welp, that's all folks! 1.4 is out! :D
+
+If you had this mod before 1.4's release, you would have seen an epic Crab Rave event happen for 20 seconds and 1.4 fireworks come out of each player when the countdown hit zero!
+
+I still can't believe this mod hit 2K downloads in only a few days! This is my first published mod too!
+Now, I have decided that this mod shall not be unpublished the day after 1.4 is out.
+
+--------------------
+Original Description
+--------------------
+
 Terraria 1.4 Countdown Watch simply adds a watch to Terraria that allows you to see and customize a countdown to 1.4 that displays on the top of the screen.
 
 When that countdown reaches zero, however, there is an in-game event that changes the spawn pool for 20 seconds...
 It happens whether or not the player has the countdown watch in their inventory.
 
-After 1.4 has released, it's highly recommended that you uninstall this mod. Otherwise, the in-game event would always occur when loading a world.
-
 This mod will be unpublished the day after 1.4 is released.
-
-
-
-
-
-
-
 
 
 Music during in-game event:
 Noisestorm - Crab Rave (Remix by me)
 
 Changelog:
-+ Added icon to Mod Browser
++ Added icon to Mod Browser (v0.2)
+* Fixed timer end time so it's at May 16, 2020 at 1PM EST / 10 AM PST (v0.3)
+* Fixed bug where the countdown would keep starting (v0.3)
+* Changed icon in Mod Browser (v0.4)
+
+Why are you still reading this? Go play Journey's End!
